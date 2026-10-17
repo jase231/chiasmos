@@ -1,0 +1,8 @@
+.cache/
+build/
+docs/
+data/
+*.cix
+*.tmp
+compile_commands.json
+__pycache__/

@@ -1,0 +1,7 @@
+file(GLOB SRC CONFIGURE_DEPENDS *.cpp)
+add_executable(chiasmos ${SRC})
+target_link_libraries(chiasmos PRIVATE chiasmos_build chiasmos_output chiasmos_query chiasmos_index chiasmos_normalize chiasmos_core CLI11::CLI11)
+if(CHIASMOS_SERVER)
+  target_link_libraries(chiasmos PRIVATE chiasmos_server)
+  target_compile_definitions(chiasmos PRIVATE CHIASMOS_HAS_SERVER=1)
+endif()

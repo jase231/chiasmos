@@ -1,0 +1,14 @@
+BasedOnStyle: LLVM
+
+# east const
+QualifierAlignment: Right
+
+# bind * and & to the type
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+DerivePointerAlignment: false
+
+# space padding inside braced init
+Cpp11BracedListStyle: Block
+
+AllowShortFunctionsOnASingleLine: All
