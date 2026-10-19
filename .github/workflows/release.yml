@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    env:
+      CXX: g++-14
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends g++-14 ninja-build libcli11-dev nlohmann-json3-dev \
+            libosmium2-dev libprotozero-dev libboost-dev libgtest-dev zlib1g-dev
+
+      - run: cmake --preset release
+      - run: cmake --build --preset release
+      - run: ctest --preset release
+
+      - name: Package
+        run: tar -C build/release/src/cli -czf "chiasmos-${GITHUB_REF_NAME}-linux-x86_64.tar.gz" chiasmos
+
+      - name: Publish
+        run: gh release create "$GITHUB_REF_NAME" chiasmos-*.tar.gz --generate-notes
