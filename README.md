@@ -26,7 +26,7 @@ Queries: `--near LAT,LON` or `--bbox WEST,SOUTH,EAST,NORTH` keeps same-named str
 chiasmos query -i virginia.cix --q "W Broad St & N Belvidere St" --near 37.55,-77.45
 chiasmos query -i virginia.cix --street1 "W Broad St" --street2 "N Belvidere St" --bbox -77.60,37.45,-77.38,37.61
 chiasmos batch -i virginia.cix --in in.csv --out out.csv --q-col address
-chiasmos serve -i virginia.cix --listen 127.0.0.1:8080
+chiasmos serve -i virginia.cix --host 127.0.0.1 --port 8080
 curl '127.0.0.1:8080/v1/intersections?q=W+Broad+St+%26+N+Belvidere+St&near=37.55,-77.45'
 ```
 Results are GeoJSON. `--limit` and `--min-score` (API: `limit`, `min_score`) cap and filter them. `chiasmos <command> --help` lists every option.

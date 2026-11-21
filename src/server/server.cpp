@@ -71,14 +71,13 @@ void session(tcp::socket& socket, query::Engine const& engine) {
 
 } // namespace
 
-Result<void> serve(query::Engine const& engine, std::string const& host,
-                   std::uint16_t port) {
+Result<void> serve(query::Engine const& engine, Options const& opts) {
   beast::error_code ec;
-  auto const address = net::ip::make_address(host, ec);
+  auto const address = net::ip::make_address(opts.host, ec);
   if (ec)
     return fail(Errc::InvalidArgument,
-                "bad listen address '" + host + "': " + ec.message());
-  tcp::endpoint const endpoint{ address, port };
+                "bad listen address '" + opts.host + "': " + ec.message());
+  tcp::endpoint const endpoint{ address, opts.port };
   net::io_context io;
   tcp::acceptor acceptor(io);
   if (acceptor.open(endpoint.protocol(), ec); ec)
@@ -86,7 +85,7 @@ Result<void> serve(query::Engine const& engine, std::string const& host,
   if (acceptor.set_option(net::socket_base::reuse_address(true), ec); ec)
     return fail(Errc::Io, ec.message());
   if (acceptor.bind(endpoint, ec); ec)
-    return fail(Errc::Io, "bind " + host + ": " + ec.message());
+    return fail(Errc::Io, "bind " + opts.host + ": " + ec.message());
   if (acceptor.listen(net::socket_base::max_listen_connections, ec); ec)
     return fail(Errc::Io, ec.message());
   for (;;) {
