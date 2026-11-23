@@ -11,7 +11,7 @@ Its index is built from a Virginia extract, and can therefore only service Virgi
 **Note:** A public API instance is not yet available, and likely won't be until chiasmos' web server is concurrent.
 
 # Build
-Needs a C++23 compiler, CMake 3.28+, Ninja, libosmium, protozero, zlib, CLI11, nlohmann_json, Boost 1.80+ (Beast, for `serve`ing the API, can skip with `-DCHIASMOS_SERVER=OFF`) and GoogleTest (skip with `-DCHIASMOS_TESTS=OFF`).
+Needs a C++23 compiler, CMake 3.28+, Ninja, libosmium, protozero, zlib, CLI11, nlohmann_json, Boost 1.80+ with Boost.JSON (for `serve`ing the API; [beauty](https://github.com/dfleury2/beauty) is fetched at configure time; skip both with `-DCHIASMOS_SERVER=OFF`) and GoogleTest (skip with `-DCHIASMOS_TESTS=OFF`).
 ```sh
 cmake --preset release && cmake --build --preset release   # binary: build/release/src/cli/chiasmos
 ```
@@ -26,7 +26,7 @@ Queries: `--near LAT,LON` or `--bbox WEST,SOUTH,EAST,NORTH` keeps same-named str
 chiasmos query -i virginia.cix --q "W Broad St & N Belvidere St" --near 37.55,-77.45
 chiasmos query -i virginia.cix --street1 "W Broad St" --street2 "N Belvidere St" --bbox -77.60,37.45,-77.38,37.61
 chiasmos batch -i virginia.cix --in in.csv --out out.csv --q-col address
-chiasmos serve -i virginia.cix --listen 127.0.0.1:8080
+chiasmos serve -i virginia.cix --host 127.0.0.1 --port 8080
 curl '127.0.0.1:8080/v1/intersections?q=W+Broad+St+%26+N+Belvidere+St&near=37.55,-77.45'
 ```
 Results are GeoJSON. `--limit` and `--min-score` (API: `limit`, `min_score`) cap and filter them. `chiasmos <command> --help` lists every option.

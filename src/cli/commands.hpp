@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <string>
 
+#include "server/options.hpp"
+
 namespace chiasmos::cli {
 
 struct BuildOptions {
@@ -27,7 +29,7 @@ struct BatchOptions {
 
 struct ServeOptions {
   std::filesystem::path index;
-  std::string listen = "127.0.0.1:8080";
+  server::Options server;
 };
 
 struct InspectOptions {

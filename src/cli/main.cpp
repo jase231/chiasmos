@@ -4,6 +4,10 @@
 #include "index/format.hpp"
 #include "normalize/normalizer.hpp"
 
+#ifdef CHIASMOS_HAS_SERVER
+#include "server/server.hpp"
+#endif
+
 int main(int argc, char** argv) {
   using namespace chiasmos;
   CLI::App app{ "chiasmos: fast OpenStreetMap intersection geocoder" };
@@ -76,7 +80,15 @@ int main(int argc, char** argv) {
   s->add_option("-i,--index", serve.index, "index file")
       ->required()
       ->check(CLI::ExistingFile);
-  s->add_option("--listen", serve.listen, "HOST:PORT")->capture_default_str();
+  s->add_option("--host", serve.server.host, "host address to listen on")
+      ->capture_default_str();
+  s->add_option("--port", serve.server.port, "host port to listen on")
+      ->check(CLI::Range(1, 65535))
+      ->capture_default_str();
+  s->add_option("--threads", serve.server.threads,
+                "number of threads used by API server")
+      ->check(CLI::PositiveNumber)
+      ->capture_default_str();
   s->callback([&] { std::exit(cli::run_serve(serve)); });
 
   cli::InspectOptions inspect;
