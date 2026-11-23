@@ -5,10 +5,13 @@ chiasmos serves an API supporting queries in two formats:
 - A pair of street names, supplied as a parameters `street1` and `street2`
 - A query string, with the intersection declared using one of the supported separators: &, @, /, --, and xst (cross street)
 
+chiasmos depends heavily on a custom normalizer. That normalizer works well and has been tested for Virginia's road naming.
+However, while other states have been tested, chiasmos' accuracy numbers in Virginia should not yet be extrapolated to other regions in the US.
+
 # Demo
-A web demo utilizing chiasmos is available at [https://chiasmos.serwe.dev/](https://chiasmos.serwe.dev/).
-Its index is built from a Virginia extract, and can therefore only service Virginia queries.
-**Note:** A public API instance is not yet available, and likely won't be until chiasmos' web server is concurrent.
+A web demo utilizing chiasmos is available at [https://chiasmos.serwe.dev/](https://chiasmos.serwe.dev/), and the public API is available at: [https://chiasmos.serwe.dev/v1/intersections](https://chiasmos.serwe.dev/v1/intersections).
+The demo API's index is built from a Virginia extract, and can therefore only service Virginia queries.
+The demo API This software is provided "as is" and "as available," without warranty of any kind, express or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, non-infringement, and data accuracy.
 
 # Build
 Needs a C++23 compiler, CMake 3.28+, Ninja, libosmium, protozero, zlib, CLI11, nlohmann_json, Boost 1.80+ with Boost.JSON (for `serve`ing the API; [beauty](https://github.com/dfleury2/beauty) is fetched at configure time; skip both with `-DCHIASMOS_SERVER=OFF`) and GoogleTest (skip with `-DCHIASMOS_TESTS=OFF`).
@@ -53,7 +56,6 @@ A vertex is a node that road ways reference more than once, e.g. because two roa
 
 ## Todo
 - Investigate the PMR stack buffer size
-- Rewrite API server to support concurrent requests
 
 # License
 chiasmos is licensed under the GNU Affero General Public License v3.0 or later; see [LICENSE](LICENSE).
