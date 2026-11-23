@@ -11,7 +11,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 option(CHIASMOS_TESTS "Build the unit tests" ON)
-option(CHIASMOS_SERVER "Build `chiasmos serve` (needs Boost.Beast)" ON)
+option(CHIASMOS_SERVER "Build `chiasmos serve` (needs Boost JSON and fetches beauty)" ON)
 
 # dependencies:
 find_package(Threads REQUIRED)
@@ -21,7 +21,19 @@ find_package(nlohmann_json 3.11 CONFIG REQUIRED)
 find_path(OSMIUM_INC osmium/version.hpp REQUIRED)
 find_path(PROTOZERO_INC protozero/version.hpp REQUIRED)
 if(CHIASMOS_SERVER)
-  find_package(Boost 1.80 CONFIG REQUIRED)
+  set(Boost_USE_STATIC_LIBS ON) # keep the release tarball free of libboost_json.so
+  find_package(Boost 1.80 CONFIG REQUIRED COMPONENTS json)
+  include(FetchContent)
+  set(BEAUTY_ENABLE_OPENSSL OFF CACHE BOOL "" FORCE)
+  set(BEAUTY_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+  set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+  FetchContent_Declare(beauty
+    GIT_REPOSITORY https://github.com/dfleury2/beauty.git
+    GIT_TAG 58b3abfeea824a78d3a50e29696c48ae8780c3e2 # master after 1.0.8
+    SYSTEM EXCLUDE_FROM_ALL)
+  FetchContent_MakeAvailable(beauty)
+  # prevent beauty _FORTIFY_SOURCE optimization warning from breaking O0 Werror dev build
+  target_compile_options(beauty PRIVATE -Wno-error=cpp)
 endif()
 
 add_library(chiasmos_osmium INTERFACE)

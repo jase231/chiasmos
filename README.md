@@ -11,7 +11,7 @@ Its index is built from a Virginia extract, and can therefore only service Virgi
 **Note:** A public API instance is not yet available, and likely won't be until chiasmos' web server is concurrent.
 
 # Build
-Needs a C++23 compiler, CMake 3.28+, Ninja, libosmium, protozero, zlib, CLI11, nlohmann_json, Boost 1.80+ (Beast, for `serve`ing the API, can skip with `-DCHIASMOS_SERVER=OFF`) and GoogleTest (skip with `-DCHIASMOS_TESTS=OFF`).
+Needs a C++23 compiler, CMake 3.28+, Ninja, libosmium, protozero, zlib, CLI11, nlohmann_json, Boost 1.80+ with Boost.JSON (for `serve`ing the API; [beauty](https://github.com/dfleury2/beauty) is fetched at configure time; skip both with `-DCHIASMOS_SERVER=OFF`) and GoogleTest (skip with `-DCHIASMOS_TESTS=OFF`).
 ```sh
 cmake --preset release && cmake --build --preset release   # binary: build/release/src/cli/chiasmos
 ```

@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends g++-16 lld ninja-build libcli11-dev nlohmann-json3-dev \
-            libosmium2-dev libprotozero-dev libboost-dev libgtest-dev zlib1g-dev
+            libosmium2-dev libprotozero-dev libboost-dev libboost-json-dev libgtest-dev zlib1g-dev
 
         # avoid writing x86_x64 v3 into the binary by linking with lld
       - run: cmake --preset release -DCMAKE_CXX_FLAGS="-march=x86-64 -mtune=generic" -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld"
